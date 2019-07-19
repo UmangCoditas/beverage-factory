@@ -1,4 +1,4 @@
-package com.practice.tavisca.beverageCompany;
+package com.tavisca.main.beverage.company;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,8 +24,7 @@ public enum Menu {
 	}
 
 	public List<String> getIngredientList() {
-		List<String> ingredientsList = new ArrayList<>(Arrays.asList(ingredients.split(",")));
-		return ingredientsList;
+		return new ArrayList<>(Arrays.asList(ingredients.split(",")));
 	}
 
 	public double getMenuPrice() {

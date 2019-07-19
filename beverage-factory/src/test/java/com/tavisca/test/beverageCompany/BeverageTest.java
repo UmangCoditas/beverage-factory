@@ -1,57 +1,59 @@
-package com.practice.tavisca.beverageCompany;
-
-import static org.junit.Assert.assertEquals;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+package com.tavisca.test.beverageCompany;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
+import com.tavisca.main.beverage.company.Beverage;
+import com.tavisca.main.beverage.company.BeverageFactoryUtil;
+import com.tavisca.main.beverage.company.MenuException;
 
 class BeverageTest {
 	private static Beverage beverage;
 	private final double delta = 0.001;
 
-	@BeforeClass
+	@BeforeAll
 	static void setUp() throws Exception {
-		beverage = BeverageFactory.createBeverage();
+		beverage = BeverageFactoryUtil.createBeverage();
 	}
 
-	@AfterClass
+	@AfterAll
 	static void tearDown() throws Exception {
 		beverage = null;
 	}
 
 	@Test
 	void testOrderBeverageAndGetPrice() {
-		beverage = BeverageFactory.createBeverage();
 		double actualBananaSmoothiePrice = beverage.orderBeverageAndGetPrice("BananaSmoothie,-banana,-milk");
-		double expectedBananaSmoothiePrice = 4;
+		final double expectedBananaSmoothiePrice = 4;
 		assertEquals(expectedBananaSmoothiePrice, actualBananaSmoothiePrice, delta);
 
 		double actualTeaPrice = beverage.orderBeverageAndGetPrice("Chai,-sugar,-milk");
-		double expectedTeaPrice = 2.5;
+		final double expectedTeaPrice = 2.5;
 		assertEquals(expectedTeaPrice, actualTeaPrice, delta);
 
 		double regularTeaPrice = beverage.orderBeverageAndGetPrice("Chai");
-		double expectedRegularTeaPrice = 4.0;
+		final double expectedRegularTeaPrice = 4.0;
 		assertEquals(expectedRegularTeaPrice, regularTeaPrice, delta);
 
 		MenuException wrongIngredientException = Assertions.assertThrows(MenuException.class,
 				() -> beverage.orderBeverageAndGetPrice("Chai,-sugar,-mint"));
-		assertEquals("The ingredient to be removed does not belong to this menu.",
-				wrongIngredientException.getMessage());
+		assertTrue(wrongIngredientException.getMessage().contains("The ingredient to be removed does not belong to this menu."));
 
 		MenuException wrongMenuException = Assertions.assertThrows(MenuException.class,
 				() -> beverage.orderBeverageAndGetPrice("Coffee,-coffee,-milk,-sugar,-water"));
-		assertEquals("All the ingredients cannot be removed", wrongMenuException.getMessage());
+		assertTrue(wrongMenuException.getMessage().contains("All the ingredients cannot be removed"));
 
 		MenuException invalidMenuException = Assertions.assertThrows(MenuException.class,
 				() -> beverage.orderBeverageAndGetPrice(""));
-		assertEquals("Invalid Menu entered", invalidMenuException.getMessage());
+		assertTrue(invalidMenuException.getMessage().contains("Invalid Menu entered"));
 
 		MenuException unavailableMenuException = Assertions.assertThrows(MenuException.class,
 				() -> beverage.orderBeverageAndGetPrice("Latte"));
-		assertEquals("Invalid Menu entered", unavailableMenuException.getMessage());
+		assertTrue(unavailableMenuException.getMessage().contains("Invalid Menu entered"));
 
 	}
 

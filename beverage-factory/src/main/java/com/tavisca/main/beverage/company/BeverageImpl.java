@@ -1,4 +1,4 @@
-package com.practice.tavisca.beverageCompany;
+package com.tavisca.main.beverage.company;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,14 +19,10 @@ public class BeverageImpl implements Beverage {
 
 		ingredientsList.remove(selectedMenu);
 
-		if (ingredientsList.isEmpty()) {
-			return beverageCost;
-		} else {
-			if (checkValidBeverageOrder(selectedMenu, ingredientsList)) {
-				removeIngredients(ingredientsList);
-			}
+		if (!ingredientsList.isEmpty()) {
+			checkValidBeverageOrder(selectedMenu, ingredientsList);
+			removeIngredients(ingredientsList);
 		}
-
 		return beverageCost;
 
 	}
@@ -44,15 +40,13 @@ public class BeverageImpl implements Beverage {
 		beverageCost = beverageCost - (Ingredient.valueOf(enumIngredient.toUpperCase()).getIngredientPrice());
 	}
 
-	private boolean checkValidBeverageOrder(String selectedMenu, List<String> orderedIngredientsList) {
+	private void checkValidBeverageOrder(String selectedMenu, List<String> orderedIngredientsList) {
 		List<String> actualIngredientList = Menu.valueOf(selectedMenu.toUpperCase()).getIngredientList();
 		if (orderedIngredientsList.equals(actualIngredientList)) {
 			throw new MenuException("All the ingredients cannot be removed");
 		} else if (!actualIngredientList.containsAll(orderedIngredientsList)) {
 			throw new MenuException("The ingredient to be removed does not belong to this menu.");
 		}
-
-		return true;
 	}
 
 	private boolean checkValidIngredient(String ingredient) {
@@ -65,9 +59,7 @@ public class BeverageImpl implements Beverage {
 	}
 
 	private String getMenu(List<String> ingredientsList) {
-		if (checkMenuNotNull(ingredientsList)) {
-			selectedMenu = ingredientsList.get(0);
-		}
+		selectedMenu = ingredientsList.get(0);
 		if (!isMenuAvailable(selectedMenu)) {
 			throw new MenuException("Invalid Menu entered");
 		}
@@ -82,12 +74,4 @@ public class BeverageImpl implements Beverage {
 		}
 		return false;
 	}
-
-	private boolean checkMenuNotNull(List<String> ingredientsList) {
-		if (ingredientsList == null) {
-			throw new MenuException("Menu cannot be empty or blank.");
-		}
-		return true;
-	}
-
 }

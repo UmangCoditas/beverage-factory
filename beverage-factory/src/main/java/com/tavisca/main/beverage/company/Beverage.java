@@ -1,4 +1,4 @@
-package com.practice.tavisca.beverageCompany;
+package com.tavisca.main.beverage.company;
 
 
 public interface Beverage {
