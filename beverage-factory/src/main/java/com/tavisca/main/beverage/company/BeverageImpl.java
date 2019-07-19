@@ -31,8 +31,8 @@ public class BeverageImpl implements Beverage {
 		List<String> trimmedIngredientsList = ingredientsList.stream().filter(ingredient -> ingredient.startsWith("-"))
 				.collect(Collectors.toList());
 
-		trimmedIngredientsList.stream().forEach(ingredient -> checkValidIngredient(ingredient));
-		trimmedIngredientsList.stream().forEach(ingredient -> calculateCost(ingredient));
+		trimmedIngredientsList.stream().forEach(this::checkValidIngredient);
+		trimmedIngredientsList.stream().forEach(this::calculateCost);
 	}
 
 	private void calculateCost(String trimmedIngredient) {
